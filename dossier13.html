@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOSSIER 13</title>
+<style>
+  body {
+    background-color: #050505;
+    color: #e8e8e8;
+    font-family: "Courier New", monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .card {
+    background: rgba(255,255,255,0.02);
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+  }
+  input, button {
+    padding: 0.5rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    width: 80%;
+    border-radius: 6px;
+    border: none;
+  }
+  input { display: block; margin: 1rem auto; }
+  button { cursor: pointer; background-color: #222; color: #e8e8e8; }
+  button:hover { background-color: #444; }
+  #message { margin-top: 1rem; min-height: 2em; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>DOSSIER 13</h1>
+    <p id="lead">Ce dossier n'a jamais dû être rouvert.</p>
+    <input type="text" id="codeInput" placeholder="Mot de passe...">
+    <button id="submitBtn">Entrer</button>
+    <p id="message"></p>
+  </div>
+
+<script>
+const STEPS = [
+  { code:'VOX', text:'Premier indice : cherche là où les dictionnaires s\'empilent' },
+  { code:'LUX', text:'Indice suivant : le métal garde ce qu\'il refuse de dire' },
+  { code:'0810', text:'Date à retrouver : 08/10' },
+  { code:'OMBRE', text:'Reconstitue les lettres manquantes (_ M _ R E)' },
+  { code:'FIN', text:'Tu as rouvert le dossier 13. OMNIA CADUNT.' }
+];
+
+let step = 0;
+const input = document.getElementById('codeInput');
+const submit = document.getElementById('submitBtn');
+const message = document.getElementById('message');
+const lead = document.getElementById('lead');
+
+function nextStep(){
+  if(step >= STEPS.length) return;
+  message.textContent = STEPS[step].text;
+  input.value='';
+  input.focus();
+}
+
+function check(val){
+  if(val.toUpperCase() === STEPS[step].code){
+    step++;
+    if(step === STEPS.length){
+      lead.textContent='DOSSIER 13 — CLOS';
+      message.textContent = STEPS[STEPS.length-1].text;
+      input.style.display='none';
+      submit.style.display='none';
+    } else {
+      nextStep();
+    }
+  } else {
+    message.textContent='Mot incorrect. Cherche l\'indice dans la salle (3°1).';
+  }
+}
+
+submit.addEventListener('click', ()=>{ check(input.value.trim()); });
+input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') check(input.value.trim()); });
+
+nextStep();
+</script>
+</body>
+</html>
